@@ -36,35 +36,36 @@ public class ConvertFileTypeApi {
         } else {
             return "wrong input file types";
         }
+        String result = "";
         FileSaverApiController fileSaverApiController = new FileSaverApiController();
         String oldfile = fileSaverApiController.saveStatsToFile(oldfiletype, input);
+        Map<String, String> elements;
 
         switch (oldfiletype) {
             case "txt":
                 System.out.println(oldfile);
-                Map<String, String> elementsTXT = new HashMap();
+                elements = new HashMap();
                 String lines[] = oldfile.split("\\r?\\n");
                 for (int i = 0; i < lines.length; i++) {
                     String[] parts = lines[i].split(":");
-                    elementsTXT.put(parts[0], parts[1]);
+                    elements.put(parts[0], parts[1]);
                 }
-                for (Map.Entry<String, String> entry : elementsTXT.entrySet()) {
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
-
                 break;
             case "json":
                 System.out.println(oldfile);
-                Map<String, String> elementsJSON = new ObjectMapper().readValue(oldfile, HashMap.class);
+                elements = new ObjectMapper().readValue(oldfile, HashMap.class);
 
-                for (Map.Entry<String, String> entry : elementsJSON.entrySet()) {
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
 
                 break;
             case "xml":
                 System.out.println(oldfile);
-                Map<String, String> elementsXML = new HashMap();
+                elements = new HashMap();
 
                 List<String> tagValues = new ArrayList<String>();
                 Matcher matcher = TAG_REGEX.matcher(oldfile);
@@ -76,23 +77,23 @@ public class ConvertFileTypeApi {
                     if (i % 2 == 0)
                         key = tagValues.get(i);
                     else
-                        elementsXML.put(key, tagValues.get(i));
+                        elements.put(key, tagValues.get(i));
                 }
 
-                for (Map.Entry<String, String> entry : elementsXML.entrySet()) {
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
                 break;
             case "csv":
                 System.out.println(oldfile);
                 String linesCSV[] = oldfile.split("\\r?\\n");
-                Map<String, String> elementsCSV = new HashMap();
+                elements = new HashMap();
                 for (int i = 1; i < linesCSV.length; i++) {
                     String arr[] = linesCSV[i].split(",");
-                    elementsCSV.put(arr[0], arr[1]);
+                    elements.put(arr[0], arr[1]);
                 }
 
-                for (Map.Entry<String, String> entry : elementsCSV.entrySet()) {
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
                 break;
@@ -103,22 +104,37 @@ public class ConvertFileTypeApi {
 
         switch (newfiletype) {
             case "txt":
-
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
+                    result += entry.getKey() + " : " + entry.getValue() + "\n";
+                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
+                }
                 break;
             case "json":
-
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    String json = objectMapper.writeValueAsString(elements);
+                    result = json;
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "xml":
-
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                XMLEncoder xmlEncoder = new XMLEncoder(byteArrayOutputStream);
+                xmlEncoder.writeObject(elements);
+                xmlEncoder.close();
+                result = byteArrayOutputStream.toString();
                 break;
             case "csv":
-
+                for (Map.Entry<String, String> entry : elements.entrySet()) {
+                    result += entry.getKey() + "," + entry.getValue() + "\n";
+                }
                 break;
             default:
                 return "File type must be txt, json, xml or csv.";
         }
 
-        return oldfile;
+        return result;
     }
 
 }
