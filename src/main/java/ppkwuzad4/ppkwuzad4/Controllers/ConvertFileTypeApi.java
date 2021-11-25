@@ -15,13 +15,14 @@ public class ConvertFileTypeApi {
 
     @GetMapping("/convertTypeOfStats/{newfiletype}/{oldfiletype}/{input}")
     public String convertTypeOfStats(@PathVariable String newfiletype, @PathVariable String oldfiletype, @PathVariable String input) {
-        if(!oldfiletype.equals("txt") || !oldfiletype.equals("xml") || !oldfiletype.equals("json") || !oldfiletype.equals("csv")){
+        if(oldfiletype.equals("txt") || oldfiletype.equals("xml") || oldfiletype.equals("json") || oldfiletype.equals("csv")){
+        }else{
             return "wrong input file types";
         }
-        if(!newfiletype.equals("txt") || !newfiletype.equals("xml") || !newfiletype.equals("json") || !newfiletype.equals("csv")){
+        if(newfiletype.equals("txt") || newfiletype.equals("xml") || newfiletype.equals("json") || newfiletype.equals("csv")){
+        }else{
             return "wrong input file types";
         }
-
         FileSaverApiController fileSaverApiController = new FileSaverApiController();
 
 
