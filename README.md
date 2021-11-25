@@ -14,7 +14,7 @@ Aplikacja odpalana jest funkcją main zawartą klasie Ppkwuzad4Application. Proj
 
 # Analizowanie danych wejściowych
 
-Pierwszym endpointem jest endpoint do analizowania danych wejściowych i zapisu ich na jeden z typów (txt, json, csv lub xml).
+Pierwszym endpointem jest endpoint do analizowania danych wejściowych i zapisu ich na jeden z typów (txt, json, csv lub xml). Zwraca plik o podanym typie.
 
 Opis:
 
@@ -29,7 +29,7 @@ Przykład:
 ```http://localhost:8080/secondSaveStatsToFile/json/ala ma kota ```
 ![obraz](saving.png)
 # Konwersja pliku
-Drugim endpointem jest endpoint do konwersji wprowadzonego pliku na inny plik.
+Drugim endpointem jest endpoint do konwersji wprowadzonego pliku na inny plik. Zwraca on przekonwertowany plik.
 
 Opis:
 
