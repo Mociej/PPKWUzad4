@@ -36,6 +36,7 @@ public class ConvertFileTypeApi {
         } else {
             return "wrong input file types";
         }
+
         String result = "";
         FileSaverApiController fileSaverApiController = new FileSaverApiController();
         String oldfile = fileSaverApiController.saveStatsToFile(oldfiletype, input);
@@ -43,58 +44,42 @@ public class ConvertFileTypeApi {
 
         switch (oldfiletype) {
             case "txt":
-                System.out.println(oldfile);
                 elements = new HashMap();
                 String lines[] = oldfile.split("\\r?\\n");
+
                 for (int i = 0; i < lines.length; i++) {
                     String[] parts = lines[i].split(":");
                     elements.put(parts[0], parts[1]);
                 }
-                for (Map.Entry<String, String> entry : elements.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
-                }
                 break;
             case "json":
-                System.out.println(oldfile);
                 elements = new ObjectMapper().readValue(oldfile, HashMap.class);
-
-                for (Map.Entry<String, String> entry : elements.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
-                }
-
                 break;
             case "xml":
-                System.out.println(oldfile);
                 elements = new HashMap();
-
                 List<String> tagValues = new ArrayList<String>();
                 Matcher matcher = TAG_REGEX.matcher(oldfile);
+
                 while (matcher.find()) {
                     tagValues.add(matcher.group(1));
                 }
+
                 String key = "";
+
                 for (int i = 0; i < tagValues.size(); i++) {
                     if (i % 2 == 0)
                         key = tagValues.get(i);
                     else
                         elements.put(key, tagValues.get(i));
                 }
-
-                for (Map.Entry<String, String> entry : elements.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
-                }
                 break;
             case "csv":
-                System.out.println(oldfile);
                 String linesCSV[] = oldfile.split("\\r?\\n");
                 elements = new HashMap();
+
                 for (int i = 1; i < linesCSV.length; i++) {
                     String arr[] = linesCSV[i].split(",");
                     elements.put(arr[0], arr[1]);
-                }
-
-                for (Map.Entry<String, String> entry : elements.entrySet()) {
-                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
                 break;
             default:
@@ -106,7 +91,6 @@ public class ConvertFileTypeApi {
             case "txt":
                 for (Map.Entry<String, String> entry : elements.entrySet()) {
                     result += entry.getKey() + " : " + entry.getValue() + "\n";
-                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
                 }
                 break;
             case "json":
@@ -133,8 +117,6 @@ public class ConvertFileTypeApi {
             default:
                 return "File type must be txt, json, xml or csv.";
         }
-
         return result;
     }
-
 }
