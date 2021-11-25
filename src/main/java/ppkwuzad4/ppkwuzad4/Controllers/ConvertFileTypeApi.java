@@ -38,8 +38,7 @@ public class ConvertFileTypeApi {
         }
 
         String result = "";
-        FileSaverApiController fileSaverApiController = new FileSaverApiController();
-        String oldfile = fileSaverApiController.saveStatsToFile(oldfiletype, input);
+        String oldfile = input;
         Map<String, String> elements;
 
         switch (oldfiletype) {
