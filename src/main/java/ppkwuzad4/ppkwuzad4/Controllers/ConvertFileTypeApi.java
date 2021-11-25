@@ -9,11 +9,16 @@ import ppkwuzad3.ppkwuzad3.Controllers.FileSaverApiController;
 
 import java.beans.XMLEncoder;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class ConvertFileTypeApi {
+    private static final Pattern TAG_REGEX = Pattern.compile("<string>(.+?)</string>", Pattern.DOTALL);
 
     @GetMapping("/secondSaveStatsToFile/{filetype}/{input}")
     public String secondSaveStatsToFile(@PathVariable String filetype, @PathVariable String input) {
@@ -41,10 +46,7 @@ public class ConvertFileTypeApi {
                 String lines[] = oldfile.split("\\r?\\n");
                 for (int i = 0; i < lines.length; i++) {
                     String[] parts = lines[i].split(":");
-//                    System.out.println(parts[0]);
-////                    parts[1].replaceAll("\\s","");
-//                    System.out.println(parts[1]);
-                    elementsTXT.put(parts[0],parts[1]);
+                    elementsTXT.put(parts[0], parts[1]);
                 }
                 for (Map.Entry<String, String> entry : elementsTXT.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
@@ -53,7 +55,7 @@ public class ConvertFileTypeApi {
                 break;
             case "json":
                 System.out.println(oldfile);
-                Map<String,String> elementsJSON = new ObjectMapper().readValue(oldfile, HashMap.class);
+                Map<String, String> elementsJSON = new ObjectMapper().readValue(oldfile, HashMap.class);
 
                 for (Map.Entry<String, String> entry : elementsJSON.entrySet()) {
                     System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
@@ -62,13 +64,30 @@ public class ConvertFileTypeApi {
                 break;
             case "xml":
                 System.out.println(oldfile);
+                Map<String, String> elementsXML = new HashMap();
 
+                List<String> tagValues = new ArrayList<String>();
+                Matcher matcher = TAG_REGEX.matcher(oldfile);
+                while (matcher.find()) {
+                    tagValues.add(matcher.group(1));
+                }
+                String key = "";
+                for (int i = 0; i < tagValues.size(); i++) {
+                    if (i % 2 == 0)
+                        key = tagValues.get(i);
+                    else
+                        elementsXML.put(key, tagValues.get(i));
+                }
+
+                for (Map.Entry<String, String> entry : elementsXML.entrySet()) {
+                    System.out.println("Key = " + entry.getKey() + " Value = " + entry.getValue());
+                }
                 break;
             case "csv":
                 System.out.println(oldfile);
                 String linesCSV[] = oldfile.split("\\r?\\n");
                 Map<String, String> elementsCSV = new HashMap();
-                for(int i=1;i<linesCSV.length;i++){
+                for (int i = 1; i < linesCSV.length; i++) {
                     String arr[] = linesCSV[i].split(",");
                     elementsCSV.put(arr[0], arr[1]);
                 }
