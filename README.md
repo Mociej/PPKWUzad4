@@ -37,6 +37,7 @@ Opis:
 
 gdzie:
 ```newfiletype``` to finalny format pliku (txt, json, csv lub xml) , ```oldfiletype```, to format inputu (txt, json, csv lub xml) , ```input``` to zawartość pliku.
+
 Przykład:
 ```http://localhost:8080/convertTypeOfStats/xml/json/{"lowerCase ":" 9","words in string ":" 3","special characters ":" 0","digits ":" 0","upperCase ":" 0","whitespaces ":" 2","Input string ":" ala ma kota","String length ":" 11"}```
 ![obraz](convert.png)
