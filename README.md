@@ -1,6 +1,6 @@
 # PPKU - API konwertujące różne typy plików
 
-Zadaniem API jest zmiana wprowadzonego pliku na plik o innym typie. Domyślnie można wprowadzić pliki: txt,json,csv i xml.
+Zadaniem API jest zmiana wprowadzonego pliku na plik o innym typie. Domyślnie można wprowadzić pliki: txt, json, csv i xml.
 API posiada również funkcję analizowania podanej sekwencji znaków.
 
 Aplikacja stworzona jest za pomocą Springa wykorzustując Spring Web.
@@ -8,7 +8,7 @@ Aplikacja stworzona jest za pomocą Springa wykorzustując Spring Web.
 Do projektu nalezy dołączyć moduły ppkwuzad3 i ppkwuzad2 z poprzednich zadań. Dodaje się je klikając
 ```File > Project Structure > Project Settings > Modules.```
 
-Klikając ```+``` w drugiej kolumnie u góry dodajemy moduł
+Klikając ```+``` w drugiej kolumnie u góry dodajemy moduł.
 
 Aplikacja odpalana jest funkcją main zawartą klasie Ppkwuzad4Application. Projekt zawiera klasę ```ConvertFileTypeApi``` zawierającą endpointy ```secondSaveStatsToFile``` i ```convertTypeOfStats```.
 
